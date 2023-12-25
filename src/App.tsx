@@ -7,7 +7,7 @@ function App() {
   // const [count, setCount] = useState(0);
 
   return (
-    <main className="w-full h-screen bg-no-repeat bg-cover">
+    <main className="w-full h-screen bg-no-repeat bg-cover bg-center bg-fixed	">
       <h1 className="text-lg color-#82C3EC">Hello World!</h1>
     </main>
   );
