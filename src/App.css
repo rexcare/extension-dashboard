@@ -1,3 +1,19 @@
+main {
+  background-image: url("./assets/nordic_s.jpg");
+}
+
+@media (min-width: 768px) {
+  main {
+    background-image: url("./assets/nordic_m.jpg");
+  }
+}
+
+@media (min-width: 1280px) {
+  main {
+    background-image: url("./assets/nordic_l.jpg");
+  }
+}
+
 /* #root {
   max-width: 1280px;
   margin: 0 auto;
