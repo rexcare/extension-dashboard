@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 // import reactLogo from "./assets/react.svg";
 // import viteLogo from "/vite.svg";
 import "./App.css";
-import { getFormattedDateTime } from "./helper";
+import { getFormattedDateTime, getGeolocation } from "./helper";
 
 function App() {
   const [count, setCount] = useState<number>(0);
@@ -11,12 +11,19 @@ function App() {
   );
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCount(count + 1);
-      setCurrentDateTime(getFormattedDateTime(new Date()));
-    }, 1000);
+    const interval = setInterval(countAndGetCurrentDate, 1000);
     return () => clearInterval(interval);
   }, [count]);
+
+  function countAndGetCurrentDate(): void {
+    setCount(count + 1);
+    setCurrentDateTime(getFormattedDateTime(new Date()));
+  }
+
+  function getLocation() {
+    const location: GeolocationCoordinates | undefined = getGeolocation();
+    console.log(location && JSON.stringify(location));
+  }
 
   return (
     <main className="w-full h-screen bg-no-repeat bg-cover bg-center bg-fixed	bg-#82C3EC color-white grid grid-cols-3">
@@ -25,7 +32,9 @@ function App() {
       <h1 className="col-span-3 justify-self-center text-3xl md:text-6xl lg:text-8xl">
         {currentDateTime}
       </h1>
-      <div className="self-end">Location</div>
+      <div className="self-end" onClick={getLocation}>
+        Location
+      </div>
       <h2 className="justify-self-center self-center text-md md:text-3xl lg:text-4xl">
         Main focus
       </h2>
