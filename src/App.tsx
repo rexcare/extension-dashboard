@@ -1,18 +1,34 @@
-// import { useState } from "react";
+import { useEffect, useState } from "react";
 // import reactLogo from "./assets/react.svg";
 // import viteLogo from "/vite.svg";
 import "./App.css";
+import { getFormattedDateTime } from "./helper";
 
 function App() {
-  // const [count, setCount] = useState(0);
+  const [count, setCount] = useState<number>(0);
+  const [currentDateTime, setCurrentDateTime] = useState<string>(
+    getFormattedDateTime(new Date())
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCount(count + 1);
+      setCurrentDateTime(getFormattedDateTime(new Date()));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [count]);
 
   return (
     <main className="w-full h-screen bg-no-repeat bg-cover bg-center bg-fixed	bg-#82C3EC color-white grid grid-cols-3">
       <p className="col-span-2">Jen Chen</p>
       <div className="justify-self-end">Weather</div>
-      <p className="col-span-3 justify-self-center">Current time</p>
+      <h1 className="col-span-3 justify-self-center text-3xl md:text-6xl lg:text-8xl">
+        {currentDateTime}
+      </h1>
       <div className="self-end">Location</div>
-      <div className="justify-self-center self-center">Main focus</div>
+      <h2 className="justify-self-center self-center text-md md:text-3xl lg:text-4xl">
+        Main focus
+      </h2>
       <div className="self-end justify-self-end">Todo</div>
     </main>
   );
