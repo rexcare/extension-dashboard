@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 // import reactLogo from "./assets/react.svg";
 // import viteLogo from "/vite.svg";
 import "./App.css";
-import { getFormattedDateTime, getGeolocation } from "./helper";
+import { getFormattedDateTime, getGeolocationCoordinates } from "./helper";
 
 function App() {
   const [count, setCount] = useState<number>(0);
@@ -21,8 +21,7 @@ function App() {
   }
 
   function getLocation() {
-    const location: GeolocationCoordinates | undefined = getGeolocation();
-    console.log(location && JSON.stringify(location));
+    getGeolocationCoordinates().then((data) => console.log(data));
   }
 
   return (
