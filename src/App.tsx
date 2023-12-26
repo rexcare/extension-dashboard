@@ -17,7 +17,7 @@ function App() {
   useEffect(() => {
     if (!geoCoordinates) return;
     fetch(
-      `${import.meta.env.VITE_OPENWEATHERMAP_URL}?lat=${
+      `${import.meta.env.VITE_OPENWEATHERMAP_URL}?units=metric&lat=${
         geoCoordinates.lat
       }&lon=${geoCoordinates.long}&appid=${
         import.meta.env.VITE_OPENWEATHERMAP_API_KEY
