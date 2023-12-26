@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 // import viteLogo from "/vite.svg";
 import "./App.css";
 import { getFormattedDateTime, getGeolocationCoordinates } from "./helper";
-import { GEOCoordinates } from "./types";
+import { GEOCoordinates, Temperature } from "./types";
 
 function App() {
   const [count, setCount] = useState<number>(0);
@@ -13,6 +13,14 @@ function App() {
   const [geoCoordinates, setGeoCoordinates] = useState<GEOCoordinates | null>(
     null
   );
+  const [temperature, setTemperature] = useState<Temperature>();
+  const [weatherIconURL, setWeatherIconURL] = useState<string>();
+  const [country, setCountry] = useState<string>();
+  const [city, setCity] = useState<string>();
+
+  useEffect(() => {
+    getGeolocationCoordinates().then((data) => setGeoCoordinates(data));
+  }, []);
 
   useEffect(() => {
     if (!geoCoordinates) return;
@@ -24,7 +32,21 @@ function App() {
       }`
     )
       .then((res) => res.json())
-      .then((data) => console.log(data))
+      .then((data) => {
+        setTemperature({
+          min: data.main.temp_min,
+          max: data.main.temp_max,
+          current: data.main.temp,
+        });
+        setWeatherIconURL(
+          import.meta.env.VITE_OPENWEATHERMAP_WEATHER_ICON_URL.replace(
+            "weatherIconName",
+            data.weather[0].icon
+          )
+        );
+        setCountry(data.sys.country);
+        setCity(data.name);
+      })
       .catch((err) => console.log(err));
   }, [geoCoordinates]);
 
@@ -38,19 +60,42 @@ function App() {
     setCurrentDateTime(getFormattedDateTime(new Date()));
   }
 
-  function getLocation() {
-    getGeolocationCoordinates().then((data) => setGeoCoordinates(data));
-  }
-
   return (
-    <main className="w-full h-screen bg-no-repeat bg-cover bg-center bg-fixed	bg-#82C3EC color-white grid grid-cols-3">
+    <main className="w-full h-screen bg-no-repeat bg-cover bg-center bg-fixed	bg-#82C3EC color-white grid grid-cols-3 p-4">
       <p className="col-span-2">Jen Chen</p>
-      <div className="justify-self-end">Weather and City</div>
+      <div className="justify-self-end">
+        <div className="flex flex-col">
+          <div className="w-1/2 flex items-center">
+            <img
+              src={weatherIconURL}
+              alt="Current Weather Icon"
+              className="object-cover w-full h-full"
+            />
+            {temperature && <p className="text-xl">{temperature.current}</p>}
+          </div>
+
+          {temperature && (
+            <p className="flex space-x-1">
+              <span>{temperature.min}</span>
+              <span>&deg;C</span>
+              <span>-</span>
+              <span>{temperature.max}</span>
+              <span>&deg;C</span>
+            </p>
+          )}
+        </div>
+      </div>
       <h1 className="col-span-3 justify-self-center text-3xl md:text-6xl lg:text-8xl">
         {currentDateTime}
       </h1>
-      <div className="self-end" onClick={getLocation}>
-        Location
+      <div className="self-end">
+        {city && country && (
+          <p>
+            <span>{city}</span>
+            <span>,</span>
+            <span>{country}</span>
+          </p>
+        )}
       </div>
       <h2 className="justify-self-center self-center text-md md:text-3xl lg:text-4xl">
         Main focus
