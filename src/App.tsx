@@ -55,7 +55,7 @@ function App() {
   }, [geoCoordinates]);
 
   useEffect(() => {
-    const interval = setInterval(countAndGetCurrentDate, 1000);
+    const interval = setInterval(countAndGetCurrentDate, 6000);
     return () => clearInterval(interval);
   }, [count]);
 
