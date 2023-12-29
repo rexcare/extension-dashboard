@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { getFormattedDateTime, getGeolocationCoordinates } from "./helper";
 import { GEOCoordinates, Temperature } from "./types";
+import WeatherBlock from "./WeatherBlock";
 
 function App() {
   const [count, setCount] = useState<number>(0);
@@ -13,10 +14,10 @@ function App() {
   const [geoCoordinates, setGeoCoordinates] = useState<GEOCoordinates | null>(
     null
   );
-  const [temperature, setTemperature] = useState<Temperature>();
-  const [weatherIconURL, setWeatherIconURL] = useState<string>();
-  const [country, setCountry] = useState<string>();
-  const [city, setCity] = useState<string>();
+  const [temperature, setTemperature] = useState<Temperature | null>(null);
+  const [weatherIconURL, setWeatherIconURL] = useState<string>("");
+  const [country, setCountry] = useState<string>("");
+  const [city, setCity] = useState<string>("");
 
   useEffect(() => {
     getGeolocationCoordinates().then((data) => setGeoCoordinates(data));
@@ -47,7 +48,10 @@ function App() {
         setCountry(data.sys.country);
         setCity(data.name);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        // load default data, or not to load everything
+      });
   }, [geoCoordinates]);
 
   useEffect(() => {
@@ -64,26 +68,14 @@ function App() {
     <main className="w-full h-screen bg-no-repeat bg-cover bg-center bg-fixed	bg-#82C3EC color-white grid grid-cols-3 p-4">
       <p className="col-span-2">Jen Chen</p>
       <div className="justify-self-end">
-        <div className="flex flex-col">
-          <div className="w-1/2 flex items-center">
-            <img
-              src={weatherIconURL}
-              alt="Current Weather Icon"
-              className="object-cover w-full h-full"
-            />
-            {temperature && <p className="text-xl">{temperature.current}</p>}
-          </div>
-
-          {temperature && (
-            <p className="flex space-x-1">
-              <span>{temperature.min}</span>
-              <span>&deg;C</span>
-              <span>-</span>
-              <span>{temperature.max}</span>
-              <span>&deg;C</span>
-            </p>
-          )}
-        </div>
+        {temperature && (
+          <WeatherBlock
+            weatherIconURL={weatherIconURL}
+            temperatureCurrent={temperature.current}
+            temperatureMin={temperature.min}
+            temperatureMax={temperature.max}
+          />
+        )}
       </div>
       <h1 className="col-span-3 justify-self-center text-3xl md:text-6xl lg:text-8xl">
         {currentDateTime}
