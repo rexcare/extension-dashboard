@@ -44,3 +44,6 @@ use new promise resolve reject
 # Issues and solutions
 ## Tailwind CSS does not support text shadow, so cannot use in UnoCSS
 Solution: https://www.hyperui.dev/blog/text-shadow-with-tailwindcss
+
+# use CRXJS to make Chrome Extensions
+https://crxjs.dev/vite-plugin/
