@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 // import viteLogo from "/vite.svg";
 import "./App.css";
 import { getFormattedDateTime, getGeolocationCoordinates } from "./helper";
-import { GEOCoordinates, Temperature } from "./types";
+import { GEOCoordinates, Quote, Temperature } from "./types";
 import WeatherBlock from "./WeatherBlock";
 
 function App() {
@@ -20,6 +20,7 @@ function App() {
   const [city, setCity] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>(null);
+  const [quote, setQuote] = useState<Quote | null>(null);
 
   useEffect(() => {
     getGeolocationCoordinates().then((data) => setGeoCoordinates(data));
@@ -72,8 +73,36 @@ function App() {
   }, [geoCoordinates]);
 
   useEffect(() => {
-    const interval = setInterval(countAndGetCurrentDate, 6000);
+    const interval = setInterval(countAndGetCurrentDate, 10000);
     return () => clearInterval(interval);
+  }, [count]);
+
+  useEffect(() => {
+    // /random?size=1
+    const fetchQuote = async (): Promise<Quote | null> => {
+      try {
+        // set loading true
+        // set error to false
+        // set loading to false
+        const response = await fetch(
+          `${import.meta.env.VITE_QUOTABLE_API_URL}/random?size=1`
+        );
+        const data = response.json();
+        return data;
+      } catch (error) {
+        // set loading to false
+        // set error to true
+        return null;
+      }
+    };
+
+    (async function () {
+      const data: Quote | null = await fetchQuote();
+      if (!data) return;
+
+      console.log(new Date());
+      setQuote(data);
+    })();
   }, [count]);
 
   function countAndGetCurrentDate(): void {
@@ -112,8 +141,17 @@ function App() {
           </p>
         )}
       </div>
-      <h2 className="justify-self-center self-center text-md md:text-3xl lg:text-4xl">
-        Main focus
+      <h2 className="justify-self-center self-center text-md md:text-2xl lg:text-3xl">
+        {/* fix the height add change quote smooth transition */}
+        {quote && (
+          <>
+            <p>{quote.content}</p>
+            <p className="text-base text-end">
+              <span>&mdash; </span>
+              {quote.author}
+            </p>
+          </>
+        )}
       </h2>
       <div className="self-end justify-self-end">Todo</div>
     </main>

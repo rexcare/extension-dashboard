@@ -5,8 +5,8 @@ export function padTo2Digits(num: number): string {
 }
 
 export function getFormattedDateTime(date: Date): string {
-    // return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} ${padTo2Digits(date.getHours())}:${padTo2Digits(date.getMinutes())}:${padTo2Digits(date.getSeconds())}`;
-    return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} ${padTo2Digits(date.getHours())}:${padTo2Digits(date.getMinutes())}`;
+    return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} ${padTo2Digits(date.getHours())}:${padTo2Digits(date.getMinutes())}:${padTo2Digits(date.getSeconds())}`;
+    // return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} ${padTo2Digits(date.getHours())}:${padTo2Digits(date.getMinutes())}`;
 }
 
 export async function getGeolocationCoordinates(options?: PositionOptions): Promise<GEOCoordinates> {
