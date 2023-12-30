@@ -18,6 +18,8 @@ function App() {
   const [weatherIconURL, setWeatherIconURL] = useState<string>("");
   const [country, setCountry] = useState<string>("");
   const [city, setCity] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<any>(null);
 
   useEffect(() => {
     getGeolocationCoordinates().then((data) => setGeoCoordinates(data));
@@ -25,33 +27,48 @@ function App() {
 
   useEffect(() => {
     if (!geoCoordinates) return;
-    fetch(
-      `${import.meta.env.VITE_OPENWEATHERMAP_URL}?units=metric&lat=${
-        geoCoordinates.lat
-      }&lon=${geoCoordinates.long}&appid=${
-        import.meta.env.VITE_OPENWEATHERMAP_API_KEY
-      }`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setTemperature({
-          min: data.main.temp_min,
-          max: data.main.temp_max,
-          current: data.main.temp,
-        });
-        setWeatherIconURL(
-          import.meta.env.VITE_OPENWEATHERMAP_WEATHER_ICON_URL.replace(
-            "weatherIconName",
-            data.weather[0].icon
-          )
+
+    const fetchWeather = async (): Promise<any> => {
+      setError(null);
+      setLoading(true);
+
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_OPENWEATHERMAP_URL}?units=metric&lat=${
+            geoCoordinates.lat
+          }&lon=${geoCoordinates.long}&appid=${
+            import.meta.env.VITE_OPENWEATHERMAP_API_KEY
+          }`
         );
-        setCountry(data.sys.country);
-        setCity(data.name);
-      })
-      .catch((err) => {
-        console.log(err);
-        // load default data, or not to load everything
+        const data = await response.json();
+
+        setLoading(false);
+        return data;
+      } catch (error) {
+        setError(error);
+        setLoading(false);
+        return null;
+      }
+    };
+
+    (async function () {
+      const data = await fetchWeather();
+      if (!data) return;
+
+      setTemperature({
+        min: data.main.temp_min,
+        max: data.main.temp_max,
+        current: data.main.temp,
       });
+      setWeatherIconURL(
+        import.meta.env.VITE_OPENWEATHERMAP_WEATHER_ICON_URL.replace(
+          "weatherIconName",
+          data.weather[0].icon
+        )
+      );
+      setCountry(data.sys.country);
+      setCity(data.name);
+    })();
   }, [geoCoordinates]);
 
   useEffect(() => {
@@ -68,13 +85,19 @@ function App() {
     <main className="w-full h-screen bg-no-repeat bg-cover bg-center bg-fixed	bg-#82C3EC color-white grid grid-cols-3 p-4">
       <p className="col-span-2">Jen Chen</p>
       <div className="justify-self-end">
-        {temperature && (
-          <WeatherBlock
-            weatherIconURL={weatherIconURL}
-            temperatureCurrent={temperature.current}
-            temperatureMin={temperature.min}
-            temperatureMax={temperature.max}
-          />
+        {loading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p>Error!!!</p>
+        ) : (
+          temperature && (
+            <WeatherBlock
+              weatherIconURL={weatherIconURL}
+              temperatureCurrent={temperature.current}
+              temperatureMin={temperature.min}
+              temperatureMax={temperature.max}
+            />
+          )
         )}
       </div>
       <h1 className="col-span-3 justify-self-center text-3xl md:text-6xl lg:text-8xl">
