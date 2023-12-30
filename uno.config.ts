@@ -6,6 +6,15 @@ import presetUno from '@unocss/preset-uno'
 
 export default defineConfig({
     // ...UnoCSS options
+    theme: {
+        extend: {
+            textShadow: {
+                sm: '0 1px 2px grey',
+                default: '0 2px 4px grey',
+                lg: '0 8px 16px grey',
+            },
+        },
+    },
     presets: [
         presetUno(),
         presetWebFonts({

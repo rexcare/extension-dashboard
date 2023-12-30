@@ -19,10 +19,10 @@ export default function WeatherBlock({
           alt="Current Weather Icon"
           className="object-cover w-full h-full"
         />
-        <p className="text-xl">{temperatureCurrent}</p>
+        <p className="text-xl text-shadow-sm">{temperatureCurrent}</p>
       </div>
 
-      <p className="flex space-x-1">
+      <p className="flex space-x-1 text-shadow-sm">
         <span>{temperatureMin}</span>
         <span>&deg;C</span>
         <span>-</span>

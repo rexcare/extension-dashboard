@@ -38,3 +38,9 @@ export default {
 
 # get current user's geo location
 use new promise resolve reject
+
+# get quote API
+
+# Issues and solutions
+## Tailwind CSS does not support text shadow, so cannot use in UnoCSS
+Solution: https://www.hyperui.dev/blog/text-shadow-with-tailwindcss
