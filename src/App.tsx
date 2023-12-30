@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { getFormattedDateTime, getGeolocationCoordinates } from "./helper";
 import { GEOCoordinates, Quote, Temperature } from "./types";
-import WeatherBlock from "./WeatherBlock";
+import WeatherBlock from "./components/WeatherBlock";
+import QuoteBlock from "./components/QuoteBlock";
 
 function App() {
   const [count, setCount] = useState<number>(0);
@@ -141,17 +142,9 @@ function App() {
           </p>
         )}
       </div>
-      <h2 className="justify-self-center self-center text-md md:text-xl lg:text-2xl h-20vh w-60vw overflow-hidden">
-        {quote && (
-          <div className="flex flex-col space-y-1">
-            <p className="text-ellipsis">{quote.content}</p>
-            <p className="text-base text-end">
-              <span>&mdash; </span>
-              {quote.author}
-            </p>
-          </div>
-        )}
-      </h2>
+      <div className="justify-self-center self-center text-md md:text-xl lg:text-2xl h-20vh w-60vw overflow-hidden">
+        {quote && <QuoteBlock content={quote.content} author={quote.author} />}
+      </div>
       <div className="self-end justify-self-end">Todo</div>
     </main>
   );
