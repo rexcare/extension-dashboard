@@ -109,7 +109,7 @@ function App() {
 
   return (
     <main className="w-full h-screen bg-no-repeat bg-cover bg-center bg-fixed	bg-#82C3EC color-white grid grid-cols-3 p-4">
-      <p className="col-span-2 text-shadow-sm">Jen Chen</p>
+      <p className="col-span-2 text-shadow-sm color-#a9d6e5">Jen Chen</p>
       <div className="justify-self-end">
         {loading ? (
           <p>Loading...</p>
@@ -126,7 +126,7 @@ function App() {
           )
         )}
       </div>
-      <h1 className="col-span-3 justify-self-center text-3xl md:text-5xl lg:text-8xl text-shadow-lg">
+      <h1 className="col-span-3 justify-self-center text-3xl md:text-5xl lg:text-8xl text-shadow-lg font-bold">
         {currentDateTime}
       </h1>
       <div className="self-end">
@@ -141,7 +141,7 @@ function App() {
       <div className="justify-self-center self-center text-md md:text-xl lg:text-2xl h-20vh w-60vw overflow-hidden">
         {quote && <QuoteBlock content={quote.content} author={quote.author} />}
       </div>
-      <div className="self-end justify-self-end text-shadow-sm">
+      <div className="self-end justify-self-end text-shadow-sm color-#a9d6e5">
         You're the best!
       </div>
     </main>
