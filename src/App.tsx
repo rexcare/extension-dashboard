@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-// import viteLogo from "/vite.svg";
 import "./App.css";
 import { getFormattedDateTime, getGeolocationCoordinates } from "./helper";
 import { GEOCoordinates, Quote, Temperature } from "./types";
@@ -78,7 +77,6 @@ function App() {
   }, [count]);
 
   useEffect(() => {
-    // /random?size=1
     const fetchQuote = async (): Promise<Quote | null> => {
       try {
         // set loading true
@@ -116,7 +114,7 @@ function App() {
         {loading ? (
           <p>Loading...</p>
         ) : error ? (
-          <p>Error!!!</p>
+          <p>Error</p>
         ) : (
           temperature && (
             <WeatherBlock
